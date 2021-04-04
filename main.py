@@ -61,29 +61,29 @@ for y in range(start_year, end_year + 1):
     for m in range(1, last_month + 1):
         mr = monthrange(y, m)
 
-        nifty_next50 = get_history(symbol=symbol.upper(),
-                                   start=date(y, m, 1),
-                                   end=date(y, m, mr[1]),
-                                   # expiry_date=get_expiry_date(y, m),
-                                   index=True)
+        nse_data = get_history(symbol=symbol.upper(),
+                               start=date(y, m, 1),
+                               end=date(y, m, mr[1]),
+                               # expiry_date=get_expiry_date(y, m),
+                               index=True)
 
         month_count += 1
 
         for key, value in result.items():
             investment_day = 0
             if key == "last_day":
-                investment_day = len(nifty_next50) - 1
+                investment_day = len(nse_data) - 1
             elif key == "mid_day":
-                investment_day = len(nifty_next50) // 2
+                investment_day = len(nse_data) // 2
             elif key == "second_last_day":
-                investment_day = len(nifty_next50) - 2
+                investment_day = len(nse_data) - 2
 
-            last_closing_price = nifty_next50.iloc[investment_day]["Close"]
+            last_closing_price = nse_data.iloc[investment_day]["Close"]
 
             for investment_time in value.keys():
                 result[key][investment_time]["last_closing_price"] = last_closing_price
                 result[key][investment_time]["total_units"] += sip_amount / \
-                    nifty_next50.iloc[investment_day][investment_time]
+                    nse_data.iloc[investment_day][investment_time]
 
     print("=" * 50)
     print(f"YEAR {y}")
