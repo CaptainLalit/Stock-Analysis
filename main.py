@@ -147,7 +147,8 @@ for y in range(start_year, end_year + 1):
         #             nse_data.iloc[investment_day - 1][investment_time]
 
         # increment the sip amount
-        sip_amount += int(sip_amount * (increase_precentage_per_year / 100))
+
+    sip_amount += int(sip_amount * (increase_precentage_per_year / 100))
 
     print("=" * 50)
     print(f"YEAR {y}")
