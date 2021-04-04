@@ -53,6 +53,8 @@ result = {
     },
 }
 
+result_every_day = {}
+
 month_count = 0
 
 for y in range(start_year, end_year + 1):
@@ -84,6 +86,26 @@ for y in range(start_year, end_year + 1):
                 result[key][investment_time]["last_closing_price"] = last_closing_price
                 result[key][investment_time]["total_units"] += sip_amount / \
                     nse_data.iloc[investment_day][investment_time]
+
+        for investment_day in range(1, len(nse_data) + 1):
+            if not bool(result_every_day.get(f"day_{investment_day}", None)):
+                result_every_day[f"day_{investment_day}"] = {
+                    "Close": {
+                        "total_units": 0,
+                        "last_closing_price": 0
+                    },
+                    "Open": {
+                        "total_units": 0,
+                        "last_closing_price": 0
+                    }
+                }
+
+            last_closing_price = nse_data.iloc[investment_day - 1]["Close"]
+
+            for investment_time in result_every_day[f"day_{investment_day}"].keys():
+                result_every_day[f"day_{investment_day}"][investment_time]["last_closing_price"] = last_closing_price
+                result_every_day[f"day_{investment_day}"][investment_time]["total_units"] += sip_amount / \
+                    nse_data.iloc[investment_day - 1][investment_time]
 
     print("=" * 50)
     print(f"YEAR {y}")
@@ -120,4 +142,21 @@ print("\n\n")
 print("=" * 50)
 print("Raw result")
 print(result)
+print("=" * 50)
+print("\n\n")
+
+print("=" * 50)
+print(f"Final Result of investing in any particular day of month: ")
+for key, value in result_every_day.items():
+    print(
+        key,
+        " -> ",
+        f'{int(value["Open"]["last_closing_price"]* value["Open"]["total_units"])} / {int(value["Open"]["total_units"])}',
+        "  ",
+        f'{int(value["Close"]["last_closing_price"] * value["Close"]["total_units"])} / {int(value["Open"]["total_units"])}'
+    )
+print("\n\n")
+print("=" * 50)
+print("Raw result")
+print(result_every_day)
 print("=" * 50)
