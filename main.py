@@ -51,14 +51,36 @@ result = {
             "last_closing_price": 0
         }
     },
+    "third_last_day": {
+        "Close": {
+            "total_units": 0,
+            "last_closing_price": 0
+        },
+        "Open": {
+            "total_units": 0,
+            "last_closing_price": 0
+        }
+    },
+    "fourth_last_day": {
+        "Close": {
+            "total_units": 0,
+            "last_closing_price": 0
+        },
+        "Open": {
+            "total_units": 0,
+            "last_closing_price": 0
+        }
+    },
 }
 
 result_every_day = {}
 
 month_count = 0
 
+print("Skipping current month if current year is selected in analysis")
+
 for y in range(start_year, end_year + 1):
-    last_month = now.month if now.year == y else 12
+    last_month = now.month - 1 if now.year == y else 12
 
     for m in range(1, last_month + 1):
         mr = monthrange(y, m)
@@ -79,6 +101,10 @@ for y in range(start_year, end_year + 1):
                 investment_day = len(nse_data) // 2
             elif key == "second_last_day":
                 investment_day = len(nse_data) - 2
+            elif key == "third_last_day":
+                investment_day = len(nse_data) - 3
+            elif key == "fourth_last_day":
+                investment_day = len(nse_data) - 4
 
             last_closing_price = nse_data.iloc[investment_day]["Close"]
 
