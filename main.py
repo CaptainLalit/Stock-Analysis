@@ -8,7 +8,7 @@ now = datetime.now()
 start_year = int(input("Enter start year(>= 2000): "))
 end_year = int(input(f"Enter end year(<= {now.year}): "))
 sip_amount = int(input("Enter sip amount(> 0): "))
-symbol = input("Enter index symbol(Ex: NIFTY 50)")
+symbol = input("Enter index symbol(Ex: NIFTY 50): ")
 
 result = {
     "first_day": {
